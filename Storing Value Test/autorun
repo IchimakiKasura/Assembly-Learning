@@ -1,0 +1,1 @@
+nasm -f win64 main.asm && gcc main.obj -o test.exe && ./test
