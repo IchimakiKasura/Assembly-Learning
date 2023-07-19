@@ -1,9 +1,9 @@
-%include    'bin/extern.asm'
-%include    'bin/constants.asm'
-%include    'bin/extern.asm'
-%include    'bin/define.asm'
-%include    'bin/bss.asm'
-%include    'bin/data.asm'
+%include    'bin/extern.nasm'
+%include    'bin/constants.nasm'
+%include    'bin/extern.nasm'
+%include    'bin/define.nasm'
+%include    'bin/bss.nasm'
+%include    'bin/data.nasm'
 
 global  main
 

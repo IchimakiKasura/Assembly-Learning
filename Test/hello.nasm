@@ -1,7 +1,7 @@
-%include                'bin/define.asm'
-%include                'bin/extern.asm'
-%include                'bin/data.asm'
-%include                'bin/bss.asm'
+%include                'bin/define.nasm'
+%include                'bin/extern.nasm'
+%include                'bin/data.nasm'
+%include                'bin/bss.nasm'
 
 section .code
 

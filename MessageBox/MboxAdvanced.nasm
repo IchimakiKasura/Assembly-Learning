@@ -2,7 +2,7 @@
 ;   MessageBox Created by Ichimaki kasura
 ;
 ;   To compile, run this command
-;       nasm -f win64 MBoxAdvanced.asm && gcc -o MBoxAdvanced MBoxAdvanced.obj && ./MBoxAdvanced
+;       nasm -f win64 MBoxAdvanced.nasm && gcc -o MBoxAdvanced MBoxAdvanced.obj && ./MBoxAdvanced
 ;
 ;bits 64
 default rel

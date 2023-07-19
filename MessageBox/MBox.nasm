@@ -2,7 +2,7 @@
 ;   Simple MessageBox Created by Ichimaki kasura
 ;
 ;   To compile, run this command
-;       nasm -f win64 MBox.asm && gcc -o MBox MBox.obj && ./MBox
+;       nasm -f win64 MBox.nasm && gcc -o MBox MBox.obj && ./MBox
 ;
 ;bits 64
 global  main
