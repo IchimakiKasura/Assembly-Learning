@@ -8,8 +8,10 @@
 global  main
 
 extern  MessageBoxA
+extern  ExitProcess
 
-SHADOW_ALLOC    equ     40
+SHADOW_ALLOC    equ     32
+null            equ     0
 
 section .data
     Title       db      "A simple Message Box", 0
@@ -17,19 +19,21 @@ section .data
 
 section .text
     main:
+        push    rbp
+        mov     rbp,    rsp
         sub     rsp,    SHADOW_ALLOC    ; Allocate
 
-        mov     rcx,    0               ; hwnd | window attached to?
-        mov     rdx,    Caption         ; Text Message
-        mov     r8 ,    Title           ; Window Title
-        mov     r9 ,    20h             ; 0x00000020 hex value for "MB_ICONQUESTION"
-        or      r9 ,    0h              ; 0x00000000 hex value for "MB_OK", OK button
-      ; or      r9 ,    0h              ; This defaults the focus to OK button [optional]
+        mov     rcx,    null            ; hwnd | window attached to?
+        lea     rdx,    [rel Caption]   ; Text Message
+        lea     r8 ,    [rel Title]     ; Window Title
+        mov     r9 ,    20h|0h          ; 20h value for "MB_ICONQUESTION"
+                                        ; 0h  value for "MB_OK", OK button
+                                        ; see more here:
+                                        ; https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-messagebox
+
         call    MessageBoxA             ; Executes the MessageBox
         
         ; MessageBox return value will be placed on RAX register
 
-        add     rsp,    SHADOW_ALLOC    ; De-Allocate
-
-        mov     rax,    0               ; exit code
-        ret                             ; closes and returns the exit code
+        xor     rcx,    rcx             ; exit code
+        call    ExitProcess             ; closes and returns the exit code

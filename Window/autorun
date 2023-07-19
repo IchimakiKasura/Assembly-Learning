@@ -1,0 +1,1 @@
+nasm -fwin64 main.asm && gcc -o main main.obj && ./main
