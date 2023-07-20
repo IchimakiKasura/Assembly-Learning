@@ -7,7 +7,6 @@
 ;bits 64
 default rel
 global  main
-
 extern  MessageBoxA
 extern  printf
 
@@ -17,7 +16,7 @@ NULL            equ     0
 section .bss
     hInstance   resq    1
     returnValue resq    1
-    selectedMsg resq    10
+    selectedMsg resq    1
 
 section .data
     MainTitle   db      "A simple Message Box", 0

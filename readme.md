@@ -2,6 +2,8 @@
 
 Using NASM win64 with gcc
 
+[Check my Notes](https://github.com/IchimakiKasura/Assembly-Learning/blob/master/notes.md)
+
 - MessageBox
     - Simple messagebox.
 

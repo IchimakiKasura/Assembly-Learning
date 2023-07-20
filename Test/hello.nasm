@@ -55,10 +55,10 @@ section .code
                         pop     rsi
                         pop     rdx
                         pop     rax
+                        pop     rcx
 
                         mov     rax, [rel num]
                         inc     rax
-                        pop     rcx
                         loop l1
 
                 ; end code
