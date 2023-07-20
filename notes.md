@@ -13,7 +13,7 @@ always put `rel` keyword like `[rel string]` when doing `lea` instr.
 notes:
 If `default rel` is defined on the code, the `src length` should be an `abs` like `[abs srclength]`
 
-```x86asm
+```nasm
 lea     rsi,    [src]
 lea     rdi,    [dest]
 lea     rcx,    [src length]
@@ -30,7 +30,7 @@ notes:
 If adding a calling function inside the `RCX_TRUE` or `RCX_FALSE` its required to
 allocate another shadow space/stack. recommeded is 32 bytes
 
-```x86asm
+```nasm
 extern  printf
 section .text
 global   main
@@ -81,7 +81,7 @@ int simpleFunction(int a, int b, int c, int d, int e, int f)
 }
 ```
 ## Asm
-```x86asm
+```nasm
 mov     rcx,    1
 mov     rdx,    2
 mov     r8 ,    3
@@ -97,14 +97,14 @@ simpleFunction:
     - E and F are passed to the stack thats where the `shadow space` needed* _(this is based on my understanding hence im writing these notes)_<br>
     To actually pass the extra arguments we will access the STACK which in calling convention its the `RSP`. [more here](https://learn.microsoft.com/en-us/cpp/build/x64-software-conventions?view=msvc-170#register-volatility-and-preservation)<br>
     To pass arguments you need to add more Shadow Space for the other arguments to be passed or it will seg fault as there's no bytes to be allocated. Each arguments are 8 bytes.<br><br>
-    ```x86asm
+    ```nasm
     ; single +8*5 if you're passing 1 extra parameter and +8*6 if passing 2 extra parameter
     sub     rsp,    32+8*5
     ```
     _( again this is based on my understanding for the past few days of learning this laungage )_
 
     Example:
-    ```x86asm
+    ```nasm
     sub     RSP,    32 + 64                             ; Shadow space + 8 parameters
                                                         ; ( 32+8*8 )
 
