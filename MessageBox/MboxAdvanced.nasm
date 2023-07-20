@@ -9,10 +9,7 @@ default rel
 global  main
 
 extern  MessageBoxA
-extern  ExitProcess
 extern  printf
-extern  ShowWindow
-extern  GetModuleHandleA
 
 SHADOW_ALLOC    equ     32
 NULL            equ     0
@@ -27,76 +24,69 @@ section .data
     ResultTitle db      "Results", 0
     Caption     db      "Hello!", 10, 10, "Press any buttons available and will return a message", 10, "of what button you've pressed", 10, 0
     msg1        db      "You've pressed the OK button!", 0
-    msg1Len     equ     $-msg1
     msg2        db      "You've pressed the NO button!", 0
-    msg2Len     equ     $-msg2
     msg3        db      "You've pressed the CANCEL or CLOSE button!", 0
-    msg3Len     equ     $-msg3
     fcken       db      "I hate this console popping out", 10, 0
+    
+    msg1Len     equ     $-msg1
+    msg2Len     equ     $-msg2
+    msg3Len     equ     $-msg3
 
 section .text
     main:
         mov     qword [returnValue],    NULL
 
-        sub     rsp,    8
+        push    rbp
+        mov     rbp,    rsp
+        sub     rsp,    SHADOW_ALLOC
 
         lea     rcx,    [fcken]
         call    printf
 
-        sub     rsp,    SHADOW_ALLOC
-
-        xor     rcx,    rcx
-        call    GetModuleHandleA
-        mov     qword [hInstance],      rax
-
-        mov     rcx,    [hInstance]
-        mov     rdx,    0
-
         mov     rcx,    NULL
         lea     rdx,    [Caption]
         lea     r8 ,    [MainTitle]
-        mov     r9 ,    30h|3h
+        mov     r9 ,    30h|3h|200h|NULL|20000h
         call    MessageBoxA
+        call    PRESSED
 
-        cmp     rax,    6   ; ok
-        je      .PRESSED_OK
-        cmp     rax,    7   ; no
-        je      .PRESSED_NO
-        jne     .PRESSED_CLOSE
-
-    .PRESSED_OK:
-        lea     rsi,    [msg1]
-        lea     rdi,    [selectedMsg]
-        mov     rcx,    msg1Len
-        rep     movsq
-        jmp     .RESULT
-
-    .PRESSED_NO:
-        lea     rsi,    [msg2]
-        lea     rdi,    [selectedMsg]
-        mov     rcx,    msg2Len
-        rep     movsq
-        jmp     .RESULT
-        
-    .PRESSED_CLOSE:
-        lea     rsi,    [msg3]
-        lea     rdi,    [selectedMsg]
-        mov     rcx,    msg3Len
-        rep     movsq
-        jmp     .RESULT
-
-    .RESULT:
         mov     rcx,    NULL
         lea     rdx,    [selectedMsg]
         lea     r8 ,    [ResultTitle]
-        mov     r9 ,    40h|0h
+        mov     r9 ,    40h|0h|200h|NULL|20000h
         call    MessageBoxA
 
-        add     rsp,    SHADOW_ALLOC
-    
+        call    EXIT
 
-        jmp     EXIT
+    PRESSED:
+        cmp     rax,    6
+        je      IS_OK
+        cmp     rax,    7
+        je      IS_NO
+        jne      IS_CLOSE
+
+    IS_OK:
+        lea     rsi,    [msg1]
+        lea     rdi,    [selectedMsg]
+        lea     rcx,    [abs msg1Len]
+        rep     movsq
+        ret
+
+    IS_NO:
+        lea     rsi,    [msg2]
+        lea     rdi,    [selectedMsg]
+        lea     rcx,    [abs msg2Len]
+        rep     movsq
+        ret
         
-EXIT:
-    xor     rcx,    rcx
-    call    ExitProcess
+    IS_CLOSE:
+        lea     rsi,    [msg3]
+        lea     rdi,    [selectedMsg]
+        lea     rcx,    [abs msg3Len]
+        rep     movsq
+        ret
+
+    EXIT:
+        xor     rax,    rax
+        leave
+        ret
